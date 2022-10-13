@@ -58,4 +58,4 @@ def get_answer():
 
     responses.append(answer)
 
-    return redirect(f"/questions/{id+1}")
+    return redirect(f"/questions/{int(id+1)}")
