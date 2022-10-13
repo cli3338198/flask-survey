@@ -6,11 +6,11 @@
   <!-- you should have one item like this for every choice -->
   {% for choice in question.choices %}
   <p>
-    <input type="radio" name="answer" value="{{choice}}" />
+    <input type="radio" name="answer" value="{{ choice }}" />
     {{choice}}
   </p>
   {% endfor %}
-  <input type="hidden" name="id" value="{id}" />
+  <input type="hidden" name="id" value="{{ id }}" />
   <button>Continue</button>
 </form>
 

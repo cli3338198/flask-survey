@@ -37,8 +37,14 @@ def begin():
 @app.get('/questions/<int:id>')
 def get_question(id):
     """
-      display the question
+      displays the question
     """
+
+    if id >= len(survey.questions):
+      return render_template("completion.html", responses=responses, 
+        questions=survey.questions
+      )
+
     question = survey.questions[id]
 
     return render_template("question.html", question=question, id=id)
@@ -50,12 +56,11 @@ def get_answer():
       handles the answer
     """
     answer = request.form["answer"]
-    print("answer is", answer)
-    id = request.form["id"]
-    print("id is ", id)
+    id = int(request.form["id"])
 
     # append to responses
-
     responses.append(answer)
 
-    return redirect(f"/questions/{int(id+1)}")
+    next_url = f"/questions/{id + 1}"
+
+    return redirect(next_url)
