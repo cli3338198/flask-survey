@@ -8,7 +8,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
 
-responses = []
+# up to step five
+#responses = []
 
 
 @app.get('/')
@@ -18,12 +19,17 @@ def root_route():
       and a button to start the survey
     """
 
+    session["responses"] = []
     survey_title = survey.title
     survey_instructions = survey.instructions
 
-    return render_template("survey_start.html", survey_title=survey_title,
-                           survey_instructions=survey_instructions
-                           )
+    return render_template(
+        "survey_start.html",
+        survey_title=survey_title,
+        survey_instructions=survey_instructions
+    )
+
+# start button. shows up in network tab
 
 
 @app.post('/begin')
@@ -41,9 +47,12 @@ def get_question(id):
     """
 
     if id >= len(survey.questions):
-      return render_template("completion.html", responses=responses, 
-        questions=survey.questions
-      )
+        responses = session["responses"]
+        """ Creating tuples with question and answers """
+        results = [(survey.questions[i].question, responses[i])
+                   for i in range(0, len(survey.questions))
+                   ]
+        return render_template("completion.html", results=results)
 
     question = survey.questions[id]
 
@@ -58,9 +67,19 @@ def get_answer():
     answer = request.form["answer"]
     id = int(request.form["id"])
 
-    # append to responses
+    # append to responses (old code up to step five)
+    # responses.append(answer)
+    responses = session["responses"]
+    #print(responses, "response 72")
     responses.append(answer)
+    session["responses"] = responses
+    #print(session["responses"], "session is 75")
 
     next_url = f"/questions/{id + 1}"
 
     return redirect(next_url)
+
+# creating dictionary for completion
+# results = {survey.questions[i].question: responses[i]
+#                    for i in range(0, len(survey.questions))
+#                    }

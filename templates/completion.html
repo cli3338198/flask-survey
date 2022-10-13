@@ -2,16 +2,16 @@
 
 <h1>Thanks for completing this survey!</h1>
 
-<!-- <ul>
-  {% for i in range(0, len(questions)) %}
+<ul>
+  {% for (question,answer) in results %}
 
   <li>
-    <span>{{ questions[i] }}</span>
-    <span>": "</span>
-    <span>{{ responses[i] }}</span>
+    <span>{{ question }}</span>
+    <span>: </span>
+    <span>{{ answer }}</span>
   </li>
 
   {% endfor %}
-</ul> -->
+</ul>
 
 {% endblock %}
