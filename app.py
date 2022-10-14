@@ -20,6 +20,7 @@ def root_route():
     """
 
     session["responses"] = []
+    session["questions_answered"] = []
     survey_title = survey.title
     survey_instructions = survey.instructions
 
@@ -45,6 +46,14 @@ def get_question(id):
     """
       displays the question
     """
+
+    """ protecting questions """
+    answered = session["questions_answered"]
+    print(answered, "answered here")
+    """ if truthy and if last index of answered is not equal to the current id"""
+    if answered and answered[-1] != id-1:
+        flash("Woah buddy. Calm down")
+        return redirect(f"/questions/{answered[-1]+1}")
 
     if id >= len(survey.questions):
         responses = session["responses"]
@@ -75,11 +84,10 @@ def get_answer():
     session["responses"] = responses
     #print(session["responses"], "session is 75")
 
+    answered = session["questions_answered"]
+    answered.append(id)
+    session["questions_answered"] = answered
+
     next_url = f"/questions/{id + 1}"
 
     return redirect(next_url)
-
-# creating dictionary for completion
-# results = {survey.questions[i].question: responses[i]
-#                    for i in range(0, len(survey.questions))
-#                    }
